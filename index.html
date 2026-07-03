@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" data-props-for="pointer">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wandering Eyes</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- https://github.com/argyleink/prop-for-that: exposes live browser state as --live-* CSS custom properties -->
+    <script type="module" src="https://unpkg.com/prop-for-that/dist/auto.js"></script>
+</head>
+<body onload="document.querySelectorAll('.dot').forEach(trackCenter)">
+    <main class="card">
+        <h1>Wandering Eyes</h1>
+        <p>Pick an iris. It keeps watching your cursor either way.</p>
+
+        <div class="grid">
+            <div class="radio-group">
+                <span class="group-title">Left Eye</span>
+                <label class="radio-option">
+                    <input type="radio" name="channel" checked>
+                    <span class="dot" style="--iris-color: #3fa9e0"></span>
+                    Blue
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="channel">
+                    <span class="dot" style="--iris-color: #4d8b31"></span>
+                    Green
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="channel">
+                    <span class="dot" style="--iris-color: #a9752f"></span>
+                    Hazel
+                </label>
+            </div>
+
+            <div class="radio-group">
+                <span class="group-title">Right Eye</span>
+                <label class="radio-option">
+                    <input type="radio" name="channel2" checked>
+                    <span class="dot" style="--iris-color: #3fa9e0"></span>
+                    Blue
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="channel2">
+                    <span class="dot" style="--iris-color: #4d8b31"></span>
+                    Green
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="channel2">
+                    <span class="dot" style="--iris-color: #a9752f"></span>
+                    Hazel
+                </label>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function setCenter(el) {
+            const rect = el.getBoundingClientRect();
+            el.style.setProperty('--cx', (rect.x + rect.width / 2) / window.innerWidth);
+            el.style.setProperty('--cy', (rect.y + rect.height / 2) / window.innerHeight);
+        }
+
+        function trackCenter(el) {
+            const update = () => setCenter(el);
+
+            window.addEventListener('resize', update);      // resize + zoom
+            window.addEventListener('scroll', update, true); // scroll (capture für alle)
+
+            new ResizeObserver(update).observe(el);           // element selbst ändert sich
+
+            update(); // initial
+        }
+    </script>
+</body>
+</html>
